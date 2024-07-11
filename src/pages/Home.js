@@ -1,15 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 const Home = () => {
-  console.log('home!');
 
   return (
     <>
       <h1>My Home Page</h1>
-      <p>
-        <Link to="products">Products</Link>페이지로 이동하기
-      </p>
+      <Outlet />
     </>
   );
 };

@@ -1,0 +1,52 @@
+.form {
+  max-width: 40rem;
+  margin: 2rem auto;
+  
+  label {
+    text-align: left;
+  }
+
+  label, input, button, a {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  input, textarea {
+    font: inherit;
+    padding: 0.25rem;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+
+  .loginButton {
+    font: inherit;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: var(--color-gray-300);
+    color: var(--color-gray-800);
+    border: none;
+
+    &:hover {
+      background-color: var(--color-primary-300);
+    }
+  }
+}
+
+.registerLink {
+  margin-top: 1rem;
+
+  a {
+    text-decoration: none;
+    color: var(--color-primary-500);
+
+    &:hover {
+      color: var(--color-primary-700);
+    }
+  }
+}
