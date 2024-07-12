@@ -1,0 +1,22 @@
+.progressBar {
+  margin: 10px auto;
+  width: 50%;
+  background-color: #eee;
+  border-radius: 2px;
+  position: relative;
+  height: 4px;
+}
+
+.progress {
+  height: 4px;
+  background-color: #ffd000;
+  width: 50%;
+  border-radius: 2px;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}
