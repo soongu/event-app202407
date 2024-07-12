@@ -28,9 +28,11 @@ const SignUpForm = () => {
     <div className={styles.signupForm}>
       <div className={styles.formStepActive}>
 
-        {step === 1 && <EmailInput onSuccess={emailSuccessHandler} />}
+        {/* {step === 1 && <EmailInput onSuccess={emailSuccessHandler} />}
 
-        {step === 2 && <VerificationInput />}
+        {step === 2 && <VerificationInput />} */}
+
+        <VerificationInput />
 
         {success && <ProgressBar />}
 
