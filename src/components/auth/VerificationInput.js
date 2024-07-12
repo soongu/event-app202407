@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './SignUpForm.module.scss';
+import { debounce } from 'lodash';
+import { AUTH_URL } from '../../config/host-config';
 
-const VerificationInput = () => {
+const VerificationInput = ({ email }) => {
 
   // 여러개의 컴포넌트에 ref를 거는 방법
   const inputsRef = useRef([]);
 
   // 입력한 인증코드를 저장
-  const [codes, setCodes] = useState([]);
+  const [codes, setCodes] = useState(Array(4).fill(''));
+
+  // 에러메시지 저장
+  const [error, setError] = useState('');
 
 
   // 다음 칸으로 포커스를 이동하는 함수
@@ -19,13 +24,29 @@ const VerificationInput = () => {
   };
 
   // 서버에 검증요청 보내기
-  const verifyCode = async (code) => {
-    console.log('요청 전송!: ', code);
-  };
+  const verifyCode = debounce(async (code) => {
+    // console.log('요청 전송!: ', code);
+
+    const response = await fetch(`${AUTH_URL}/code?email=${email}&code=${code}`);
+    const flag = await response.json();
+
+    // console.log('코드검증: ', flag);
+    // 검증에 실패했을 때
+    if (!flag) {
+      setError('유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.');
+      // 기존 인증코드 상태값 비우기
+      setCodes(Array(4).fill(''));
+
+      inputsRef.current[0].focus();
+      return;
+    }
+
+  }, 1500);
 
   const changeHandler = (index, inputValue) => {
 
-    const updatedCodes = [...codes, inputValue ];
+    const updatedCodes = [ ...codes ];
+    updatedCodes[index - 1] = inputValue;
     console.log(updatedCodes);
 
     // codes변수에 입력한 숫자 담아놓기
@@ -63,12 +84,12 @@ const VerificationInput = () => {
                 className={styles.codeInput}
                 maxLength={1}
                 onChange={(e) => changeHandler(index + 1, e.target.value)}
+                value={codes[index]}
               />
           ))
         }
-
-        
       </div>
+      { error && <p className={styles.errorMessage}>{error}</p> }
     </>
   );
 };
