@@ -4,8 +4,12 @@ import EmailInput from './EmailInput';
 import VerificationInput from './VerificationInput';
 import ProgressBar from '../ProgressBar';
 import PasswordInput from './PasswordInput';
+import { AUTH_URL } from '../../config/host-config';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
+
+  const navigate = useNavigate();
 
   // 현재 몇 단계가 진행되고 있는지
   const [step, setStep] = useState(1);
@@ -27,7 +31,7 @@ const SignUpForm = () => {
     setSuccess(true);
 
     setTimeout(() => {
-      setStep(prevStep => prevStep + 1);
+      setStep((prevStep) => prevStep + 1);
       setSuccess(false);
     }, 1500);
   };
@@ -43,40 +47,60 @@ const SignUpForm = () => {
     setPasswordIsValid(isValid);
   };
 
+  // 서버에 회원가입 완료 요청하기
+  const submitHandler = async (e) => {
+
+    e.preventDefault();
+    const payload = {
+      email: enteredEmail,
+      password: enteredPassword
+    };
+
+    const response = await fetch(`${AUTH_URL}/join`, {
+      method: 'POST',
+      headers: { 'Content-Type' : 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.text();
+
+    if (result) {
+      alert('회원가입에 성공하셨습니다.');
+      navigate('/');
+    }
+  };
+
   useEffect(() => {
     // 활성화 여부 감시
     const isActive = enteredEmail && passwordIsVaild;
     setActiveButton(isActive);
-
   }, [enteredEmail, enteredPassword, passwordIsVaild]);
 
   return (
-    <div className={styles.signupForm}>
-      <div className={styles.formStepActive}>
+    <form onSubmit={submitHandler}>
+      <div className={styles.signupForm}>
+        <div className={styles.formStepActive}>
+          {step === 1 && <EmailInput onSuccess={emailSuccessHandler} />}
 
-        {step === 1 && <EmailInput onSuccess={emailSuccessHandler} />}
+          {step === 2 && (
+            <VerificationInput
+              email={enteredEmail}
+              onSuccess={() => nextStep()}
+            />
+          )}
 
-        {step === 2 && 
-          <VerificationInput 
-            email={enteredEmail} 
-            onSuccess={() => nextStep()} 
-          />
-        }
+          {step === 3 && <PasswordInput onSuccess={passwordSuccessHandler} />}
 
-        {step === 3 && <PasswordInput onSuccess={passwordSuccessHandler} />}
+          {activeButton && (
+            <div>
+              <button>회원가입 완료</button>
+            </div>
+          )}
 
-        {activeButton &&
-          <div>
-            <button>
-              회원가입 완료
-            </button>
-          </div>
-        }
-
-        {success && <ProgressBar />}
-
+          {success && <ProgressBar />}
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 
