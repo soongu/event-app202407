@@ -3,7 +3,7 @@ import styles from './SignUpForm.module.scss';
 import { debounce } from 'lodash';
 import { AUTH_URL } from '../../config/host-config';
 
-const VerificationInput = ({ email }) => {
+const VerificationInput = ({ email, onSuccess }) => {
 
   // 여러개의 컴포넌트에 ref를 거는 방법
   const inputsRef = useRef([]);
@@ -13,6 +13,9 @@ const VerificationInput = ({ email }) => {
 
   // 에러메시지 저장
   const [error, setError] = useState('');
+
+  // 타이머 시간
+  const [timer, setTimer] = useState(300);
 
 
   // 다음 칸으로 포커스를 이동하는 함수
@@ -36,10 +39,16 @@ const VerificationInput = ({ email }) => {
       setError('유효하지 않거나 만료된 코드입니다. 인증코드를 재발송합니다.');
       // 기존 인증코드 상태값 비우기
       setCodes(Array(4).fill(''));
+      // 타이머 리셋
+      setTimer(300);
 
       inputsRef.current[0].focus();
       return;
     }
+
+    // 검증 성공 시
+    onSuccess();
+    setError('');
 
   }, 1500);
 
@@ -69,6 +78,17 @@ const VerificationInput = ({ email }) => {
   useEffect(() => {
     // 처음엔 첫번째 칸에 포커싱
     inputsRef.current[0].focus();
+
+    // 타이머 설정
+    const intervalId = setInterval(() => {
+      setTimer(prevTime => prevTime > 0 ? prevTime - 1 : 0);
+    }, 1000);
+
+    // 타이머 리셋
+    return () => {
+      clearInterval(intervalId);
+    };
+
   }, []);
 
   return (
@@ -88,6 +108,9 @@ const VerificationInput = ({ email }) => {
               />
           ))
         }
+      </div>
+      <div className={styles.timer}>
+        {`${'0' + Math.floor(timer / 60)}:${('0' + (timer % 60)).slice(-2)}`}
       </div>
       { error && <p className={styles.errorMessage}>{error}</p> }
     </>
