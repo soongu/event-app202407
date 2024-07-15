@@ -18,7 +18,7 @@ import WelcomePage from '../pages/WelcomePage';
 import SignUpPage from '../pages/SignUpPage';
 import { loginAction } from '../components/auth/LoginForm';
 import { logoutAction } from '../pages/Logout';
-import { userDataLoader } from './auth';
+import { userDataLoader, authCheckLoader } from './auth';
 
 
 // 라우터 설정
@@ -26,7 +26,7 @@ const eventsRouter = [
   { 
     index: true, 
     element: <Events />,
-    // loader: eventListLoader,
+    loader: authCheckLoader,
   },
   { 
     path: ':eventId', 

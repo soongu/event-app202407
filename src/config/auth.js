@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom";
 
 
 export const userDataLoader = () => {
@@ -7,3 +8,12 @@ export const userDataLoader = () => {
 
   return userData;
 };
+
+export const authCheckLoader = () => {
+  const userData = userDataLoader();
+  if (!userData) {
+    alert('로그인이 필요한 서비스입니다.');
+    return redirect('/');
+  }
+  return null;
+}
