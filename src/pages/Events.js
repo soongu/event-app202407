@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import EventList from '../components/EventList';
 import EventSkeleton from '../components/EventSkeleton';
 import { EVENT_URL } from '../config/host-config';
+import { useRouteLoaderData } from 'react-router-dom';
 
 // npm install loadsh
 // import { debounce, throttle } from 'lodash';
@@ -11,6 +12,8 @@ const Events = () => {
   // loader가 리턴한 데이터 받아오기
   // const eventList = useLoaderData();
   // console.log(eventList);
+
+  const { token } = useRouteLoaderData('user-data-loader');
 
   // 이벤트 목록 아래 박스 참조
   const skeletonBoxRef = useRef();
@@ -43,7 +46,11 @@ const Events = () => {
     console.log('start loading...');
     setLoading(true);
 
-    const response = await fetch(`${EVENT_URL}/page/${currentPage}?sort=date`);
+    const response = await fetch(`${EVENT_URL}/page/${currentPage}?sort=date`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
     const { events: loadedEvents, totalCount } = await response.json();
 
     console.log('loaded: ', { loadedEvents, totalCount, len: loadedEvents.length });
