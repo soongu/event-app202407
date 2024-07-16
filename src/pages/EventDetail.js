@@ -1,5 +1,5 @@
 import React from 'react';
-import { redirect, useLoaderData, useRouteLoaderData } from 'react-router-dom';
+import { redirect, useRouteLoaderData } from 'react-router-dom';
 import EventItem from '../components/EventItem';
 import { EVENT_URL } from '../config/host-config';
 import { getUserToken } from '../config/auth';

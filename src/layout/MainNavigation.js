@@ -26,6 +26,7 @@ const MainNavigation = () => {
               Home
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="events"
