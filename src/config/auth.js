@@ -14,6 +14,10 @@ export const getUserToken = () => {
   return getUserData().token;
 };
 
+export const getUserRole = () => {
+  return getUserData().role;
+};
+
 // 로그인 회원정보를 불러오는 loader
 export const userDataLoader = () => {
   console.log('userDataLoader call!');
@@ -30,3 +34,4 @@ export const authCheckLoader = () => {
   }
   return null; // 현재페이지에 머묾
 };
+

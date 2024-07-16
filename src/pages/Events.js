@@ -1,13 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import EventList from '../components/EventList';
 import EventSkeleton from '../components/EventSkeleton';
 import { EVENT_URL } from '../config/host-config';
 import { useRouteLoaderData } from 'react-router-dom';
+import EventContext from '../context/event-context';
 
 // npm install loadsh
 // import { debounce, throttle } from 'lodash';
 
 const Events = () => {
+
+  const { changeCount } = useContext(EventContext);
 
   const { token } = useRouteLoaderData('user-data');
 
@@ -58,6 +61,10 @@ const Events = () => {
     const updatedEvents = [...events, ...loadedEvents ];
     setEvents(updatedEvents);
     setLoading(false);
+
+    // 전역상태값 수정
+    changeCount(updatedEvents.length);
+
     // 로딩이 끝나면 페이지번호를 1 늘려놓는다.
     setCurrentPage(prevPage => prevPage + 1);
     console.log('end loading!!');
