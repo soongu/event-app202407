@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './EventForm.module.scss';
 import { useNavigate, Form, redirect } from 'react-router-dom';
 import { EVENT_URL } from '../config/host-config';
+import { getUserToken } from '../config/auth';
 
 const EventForm = ({ method, event = {} }) => {
   const {
@@ -172,6 +173,7 @@ export const action = async ({ request, params }) => {
     method: request.method,
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getUserToken()
     },
     body: JSON.stringify(payload),
   });
