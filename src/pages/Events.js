@@ -55,29 +55,31 @@ const Events = () => {
     const { events: loadedEvents, totalCount } = await response.json();
 
     console.log('loaded: ', { loadedEvents, totalCount, len: loadedEvents.length });
-
+    
     // console.log('loaded: ', loadedEvents);
-
+    
     const updatedEvents = [...events, ...loadedEvents ];
-    setEvents(updatedEvents);
-    setLoading(false);
-
     // 전역상태값 수정
     changeCount(updatedEvents.length);
 
-    // 로딩이 끝나면 페이지번호를 1 늘려놓는다.
-    setCurrentPage(prevPage => prevPage + 1);
-    console.log('end loading!!');
-
-    // 로딩이 끝나면 더 이상 가져올게 있는지 여부를 체크한다.
-    setIsFinish(totalCount === updatedEvents.length);
-
-    // 로딩 후 지금까지 불러온 데이터 개수(현재 렌더링된 개수)를 총 데이터 개수에서 차감
-    const restEventsCount = totalCount - updatedEvents.length;
-
-    // skeleton 개수 구하기 -> 남은 개수가 4보다 크면 4로 세팅 4보다 작으면 그 수로 세팅
-    const skeletonCnt = Math.min(4, restEventsCount);
-    setSkeletonCount(skeletonCnt);
+    setTimeout(() => {
+      setEvents(updatedEvents);
+      setLoading(false);
+  
+      // 로딩이 끝나면 페이지번호를 1 늘려놓는다.
+      setCurrentPage(prevPage => prevPage + 1);
+      console.log('end loading!!');
+  
+      // 로딩이 끝나면 더 이상 가져올게 있는지 여부를 체크한다.
+      setIsFinish(totalCount === updatedEvents.length);
+  
+      // 로딩 후 지금까지 불러온 데이터 개수(현재 렌더링된 개수)를 총 데이터 개수에서 차감
+      const restEventsCount = totalCount - updatedEvents.length;
+  
+      // skeleton 개수 구하기 -> 남은 개수가 4보다 크면 4로 세팅 4보다 작으면 그 수로 세팅
+      const skeletonCnt = Math.min(4, restEventsCount);
+      setSkeletonCount(skeletonCnt);
+    }, 2000);
 
   };
 
