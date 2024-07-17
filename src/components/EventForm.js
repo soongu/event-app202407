@@ -180,7 +180,7 @@ export const action = async ({ request, params }) => {
 
   if (
     request.method === 'POST'
-    && response.status === '401'
+    && response.status === 401
   ) {
       const errorText = await response.text();
       alert(errorText);
