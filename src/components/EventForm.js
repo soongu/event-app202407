@@ -178,6 +178,14 @@ export const action = async ({ request, params }) => {
     body: JSON.stringify(payload),
   });
 
+  if (
+    request.method === 'POST'
+    && response.status === '401'
+  ) {
+      const errorText = await response.text();
+      alert(errorText);
+  }
+
   return redirect('/events');
 
 };
