@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2  # 리포지토리 코드 체크아웃
+    - uses: actions/checkout@v4  # 리포지토리 코드 체크아웃
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
