@@ -21,6 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "aws s3 sync ./build s3://my-event-app998877 --profile=react-admin",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
